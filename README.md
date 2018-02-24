@@ -7,6 +7,7 @@ Requirements
 ------------
 
 - Ansible v2.0+
+- Bacula v5.6.0+
 
 Role Variables
 --------------
