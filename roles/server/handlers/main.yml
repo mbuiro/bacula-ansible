@@ -1,0 +1,6 @@
+- name: Restart bacula-director
+  systemd:
+    name: '{{ item }}'
+    state: restarted
+  with_items:
+    - bacula-director

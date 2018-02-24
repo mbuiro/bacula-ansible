@@ -1,0 +1,40 @@
+Client {
+ Name = {{ client_bacula_name }}-fd
+ Address = {{ client_ip }}
+ FDPort = 9102
+ Catalog = MyCatalog
+ Password = "{{ fd_password }}"
+ File Retention = 30 days
+ Job Retention = 6 months
+ AutoPrune = yes
+ }
+
+
+Job {
+ Name = "B-{{ client_bacula_name }}-{{ client_job_type1 }}"
+ JobDefs = "DefaultJob"
+ Client = {{ client_bacula_name }}-fd
+ Pool = {{ client_bacula_name }}
+ FileSet="{{ client_job_type1 }}"
+}
+
+{% if client_job_type2 is defined %}
+Job {
+ Name = "B-{{ client_bacula_name }}-{{ client_job_type2 }}"
+ JobDefs = "DefaultJob"
+ Client = {{ client_bacula_name }}-fd
+ Pool = {{ client_bacula_name }}
+ FileSet="{{ client_job_type2 }}"
+}
+{% endif %}
+
+Pool {
+  Name = {{ client_bacula_name }}
+  Pool Type = Backup
+  Label Format = {{ client_bacula_name }}.gz-
+  Recycle = yes
+  AutoPrune = yes
+  Volume Retention = 30 days
+    Maximum Volume Bytes = 50G
+  Maximum Volumes = 100
+}

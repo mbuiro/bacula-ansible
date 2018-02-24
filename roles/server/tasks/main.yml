@@ -1,0 +1,7 @@
+---  
+- name: copy bacula client template file
+  template:
+    src: client.cf.j2
+    dest: /etc/bacula/conf.d/{{ client_bacula_name }}.conf
+  notify:
+    - Restart bacula-director

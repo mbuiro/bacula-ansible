@@ -1,0 +1,34 @@
+---
+- name: Install apt-transport-https
+  apt:
+   name: apt-transport-https
+   state: present
+
+- name: Install Bacula-Client
+  apt:
+   name: "{{ item }}"
+   state: present
+  with_items:
+   - bacula-client
+
+- name: Stop Bacula File Daemon
+  systemd:
+    name: bacula-fd
+    state: stopped
+    enabled: yes
+
+- name: copy bacula conf files
+  template:
+    src: '{{item}}'
+    dest: /etc/bacula/
+    backup: yes
+    mode: 0600
+  with_items:
+   - bacula-fd.conf
+
+- name: Restart Bacula File Daemon
+  systemd:
+    name: bacula-fd
+    state: restarted
+    enabled: yes
+

@@ -1,0 +1,38 @@
+---
+- name: Install apt-transport-https
+  apt:
+   name: apt-transport-https
+   state: present
+
+- name: Install required packages
+  apt:
+   state: present
+   name: "{{ item }}"
+   update_cache: yes
+  with_items:
+   - ansible
+   - backupninja
+   - python
+   - software-properties-common
+   - python-mysqldb
+
+- name: Setup backupninja user with necessary permissions
+  mysql_user:
+   name: {{ backup_db_username }}
+   host: "{{ mysql_host }}"
+   login_user: {{ mysql_login}}
+   login_password: "{{ mysql_root_password }}"
+   password: "{{ backup_db_password }}"
+   state: present
+   priv: "*.*:SELECT,SHOW VIEW,TRIGGER,LOCK TABLES,RELOAD,FILE"
+
+- name: Drop in backupninja config files
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    backup: yes
+    mode: '{{ item.mode }}'
+  with_items:
+   - { src: backupninja.conf.j2, dest: /etc/backupninja.conf, mode: '0644' }
+   - { src: backupninja-creds.conf.j2, dest: /etc/backup.d/20.mysql, mode: '0600' }
+

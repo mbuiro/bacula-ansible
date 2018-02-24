@@ -1,0 +1,19 @@
+---  
+  # Bacula client settings
+  fd_password: "" # Generate a secure password 
+  client_bacula_name: "" # Client name
+  client_job_type1: "" # Your filesets
+  #client_job_type2: "" # Define if needed, leave commented if not
+  client_ip: ""
+  director_name: "" 
+
+  # (DB) Backup ninja settings if DB installed
+  backup_db: "" # Enter database name or 'all'
+  backup_db_username: ""
+  backup_db_password: ""
+  backup_db_time: "" # Use 24 hr time, Example: 21:00
+  backup_dir: "" # Example: /var/backups/mysql
+
+  # MySQL Variables
+  mysql_host: "" 
+  mysql_login: ""
